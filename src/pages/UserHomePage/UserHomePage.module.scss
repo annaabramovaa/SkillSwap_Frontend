@@ -1,0 +1,9 @@
+@use "../../styles/header.scss" as *;
+
+.header {
+  @include header;
+}
+
+.search__input {
+  margin-top: 100px;
+}

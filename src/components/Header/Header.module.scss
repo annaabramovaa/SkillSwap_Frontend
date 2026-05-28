@@ -1,0 +1,5 @@
+@use "../../styles/header.scss" as *;
+
+.header {
+  @include header;
+}
