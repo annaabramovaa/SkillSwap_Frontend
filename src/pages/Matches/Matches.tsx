@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { api } from "../../api/api";
-import styles from "./Matches.module.scss";
-import type { User } from "../../types/UserMatches";
+import { api } from "src/api/api";
+import styles from "src/pages/Matches/Matches.module.scss";
+import type { User } from "src/types/UserMatches";
 
 export const Matches = () => {
   const [matches, setMatches] = useState<User[]>([]);

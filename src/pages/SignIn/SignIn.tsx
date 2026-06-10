@@ -1,7 +1,7 @@
 import { useState } from "react";
-import type { LoginData } from "../../types/LoginData";
-import styles from "./SighIn.module.scss";
-import { api } from "../../api/api";
+import type { LoginData } from "src/types/LoginData";
+import styles from "src/pages/SignIn/SignIn.module.scss";
+import { api } from "src/api/api";
 import type { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
 

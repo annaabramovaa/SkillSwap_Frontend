@@ -1,12 +1,12 @@
 import { Route, Routes } from "react-router-dom";
-import { HomePage } from "./pages/HomePage/HomePage";
-import { SignUp } from "./pages/SignUp/SignUp";
-import { SignIn } from "./pages/SighnIn/SignIn";
-import { Profile } from "./pages/Profile/Profile";
-import { Matches } from "./pages/Matches/Matches";
-import { UserHomePage } from "./pages/UserHomePage/UserHomePage";
-import { AdminRoute } from "./components/AdminRoute/AdminRoute";
-import { AdminPage } from "./pages/AdminPage/AdminPage";
+import { HomePage } from "src/pages/HomePage/HomePage";
+import { SignUp } from "src/pages/SignUp/SignUp";
+import { SignIn } from "src/pages/SignIn/SignIn";
+import { Profile } from "src/pages/Profile/Profile";
+import { Matches } from "src/pages/Matches/Matches";
+import { UserHomePage } from "src/pages/UserHomePage/UserHomePage";
+import { AdminRoute } from "src/components/AdminRoute/AdminRoute";
+import { AdminPage } from "src/pages/AdminPage/AdminPage";
 
 export const App = () => {
   return (

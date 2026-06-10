@@ -1,8 +1,8 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import styles from "./UserHomePage.module.scss";
-import { api } from "../../api/api";
+import styles from "src/pages/UserHomePage/UserHomePage.module.scss";
+import { api } from "src/api/api";
 import { useEffect, useState } from "react";
-import type { Skill } from "../../types/SKill";
+import type { Skill } from "src/types/SKill";
 
 export const UserHomePage = () => {
   const navigate = useNavigate();

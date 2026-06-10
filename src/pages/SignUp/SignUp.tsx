@@ -1,8 +1,8 @@
 import { useState } from "react";
-import type { RegisterData } from "../../types/RegisterData";
+import type { RegisterData } from "src/types/RegisterData";
 import styles from "./SignUp.module.scss";
-import type { RegisterFormData } from "../../types/RegisterFormData";
-import { api } from "../../api/api";
+import type { RegisterFormData } from "src/types/RegisterFormData";
+import { api } from "src/api/api";
 import type { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
 

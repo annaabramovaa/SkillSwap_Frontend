@@ -1,8 +1,8 @@
 import { useEffect, useState, useRef } from "react";
-import { api } from "../../api/api";
-import type { UserProfile } from "../../types/UserProfile";
+import { api } from "src/api/api";
+import type { UserProfile } from "src/types/UserProfile";
 import type { AxiosError } from "axios";
-import styles from "./Profile.module.scss";
+import styles from "src/pages/Profile/Profile.module.scss";
 import { useNavigate } from "react-router-dom";
 
 export const Profile = () => {

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import type { UserAdmin } from "../../types/UserAdmin";
+import type { UserAdmin } from 'src/types/UserAdmin';
 import type { AxiosError } from "axios";
-import { api } from "../../api/api";
+import { api } from "src/api/api";
 
 export const AdminPage = () => {
   const [users, setUsers] = useState<UserAdmin[]>([]);
