@@ -1,9 +1,9 @@
 import { useState } from "react";
 import type { LoginData } from "src/types/LoginData";
 import styles from "src/pages/SignIn/SignIn.module.scss";
-import { api } from "src/api/api";
-import type { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
+import { authApi } from "src/api/auth.api";
+import { mapError } from "src/api/error";
 
 export const SignIn = () => {
   const [loginData, setLoginData] = useState<LoginData>({
@@ -26,21 +26,12 @@ export const SignIn = () => {
     e.preventDefault();
 
     try {
-      const response = await api.post("/users/login", {
-        email: loginData.email,
-        password: loginData.password,
-      });
-
-      const token = response.data.token;
-
-      localStorage.setItem("token", token);
-
-      api.defaults.headers.common.Authorization = `Bearer ${token}`;
+      await authApi.login(loginData.email, loginData.password);
 
       navigate("/userhome");
     } catch (err: unknown) {
-      const error = err as AxiosError<{ message: string }>;
-      setError(error.response?.data?.message || "Something went wrong");
+      const error = mapError(err);
+      setError(error.message);
     }
   };
   return (

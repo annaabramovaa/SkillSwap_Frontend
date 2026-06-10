@@ -4,6 +4,7 @@ import type { UserProfile } from "src/types/UserProfile";
 import type { AxiosError } from "axios";
 import styles from "src/pages/Profile/Profile.module.scss";
 import { useNavigate } from "react-router-dom";
+import { mapError } from "src/api/error";
 
 export const Profile = () => {
   const [userData, setUserData] = useState<UserProfile>({
@@ -63,8 +64,8 @@ export const Profile = () => {
 
         setAllSkills(allSkillsResponse.data);
       } catch (err: unknown) {
-        const error = err as AxiosError<{ message: string }>;
-        setError(error.response?.data?.message || "Something went wrong");
+        const error = mapError(err);
+        setError(error.message);
       }
     };
 
@@ -129,8 +130,8 @@ export const Profile = () => {
         learnSkills: data.learnSkills,
       }));
     } catch (err: unknown) {
-      const error = err as AxiosError<{ message: string }>;
-      setError(error.response?.data?.message || "Something went wrong");
+      const error = mapError(err);
+      setError(error.message);
     }
   };
 
@@ -153,8 +154,8 @@ export const Profile = () => {
         learnSkills: data.learnSkills,
       }));
     } catch (err: unknown) {
-      const error = err as AxiosError<{ message: string }>;
-      setError(error.response?.data?.message || "Something went wrong");
+      const error = mapError(err);
+      setError(error.message);
     }
   };
 
@@ -190,6 +191,28 @@ export const Profile = () => {
     setIsEditing(false);
   };
 
+  const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    e.target.value = "";
+
+    const localPreview = URL.createObjectURL(file);
+    setPreview(localPreview);
+
+    const formData = new FormData();
+    formData.append("avatar", file);
+
+    try {
+      const res = await api.post("/users/avatar", formData);
+
+      setAvatar(res.data.avatar);
+      setPreview("");
+    } catch (err) {
+      console.error("Avatar upload failed", err);
+    }
+  };
+
   const handleDeleteAvatar = async () => {
     try {
       await api.delete("/users/avatar");
@@ -213,25 +236,7 @@ export const Profile = () => {
           type="file"
           accept="image/*"
           style={{ display: "none" }}
-          onChange={async (e) => {
-            const file = e.target.files?.[0];
-            if (!file) return;
-
-            const localPreview = URL.createObjectURL(file);
-            setPreview(localPreview);
-
-            const formData = new FormData();
-            formData.append("avatar", file);
-
-            try {
-              const res = await api.post("/users/avatar", formData);
-
-              setAvatar(res.data.avatar);
-              setPreview("");
-            } catch (err) {
-              console.error("Avatar upload failed", err);
-            }
-          }}
+          onChange={handleAvatarChange}
         />
 
         <button type="button" onClick={() => fileInputRef.current?.click()}>

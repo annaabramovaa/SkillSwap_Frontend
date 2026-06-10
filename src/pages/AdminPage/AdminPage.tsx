@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import type { UserAdmin } from "src/types/UserAdmin";
-import type { AxiosError } from "axios";
 import { api } from "src/api/api";
 import { UsersTable } from "src/components/UsersTable/UsersTable";
 import { EditUserModal } from "src/components/EditUserModal/EditUserModal";
+import { mapError } from "src/api/error";
 
 export const AdminPage = () => {
   const [users, setUsers] = useState<UserAdmin[]>([]);
@@ -35,8 +35,8 @@ export const AdminPage = () => {
 
       setIsEmpty(data.length === 0);
     } catch (err: unknown) {
-      const error = err as AxiosError<{ message: string }>;
-      setError(error.response?.data?.message || "Something went wrong");
+      const error = mapError(err);
+      setError(error.message);
       setUsers([]);
       setIsEmpty(false);
     } finally {
@@ -76,8 +76,8 @@ export const AdminPage = () => {
       setUsers((prev) => prev.filter((u) => u.id !== id));
       setSelected((prev) => prev.filter((i) => i !== id));
     } catch (err: unknown) {
-      const error = err as AxiosError<{ message: string }>;
-      setError(error.response?.data?.message || "Something went wrong");
+      const error = mapError(err);
+      setError(error.message);
     }
   };
 
@@ -90,8 +90,8 @@ export const AdminPage = () => {
       setUsers((prev) => prev.filter((u) => !selected.includes(u.id)));
       setSelected([]);
     } catch (err: unknown) {
-      const error = err as AxiosError<{ message: string }>;
-      setError(error.response?.data?.message || "Something went wrong");
+      const error = mapError(err);
+      setError(error.message);
     }
   };
 
@@ -103,8 +103,8 @@ export const AdminPage = () => {
       setUsers((prev) => prev.map((u) => (u.id === data.id ? data : u)));
       setEditUser(null);
     } catch (err: unknown) {
-      const error = err as AxiosError<{ message: string }>;
-      setError(error.response?.data?.message || "Something went wrong");
+      const error = mapError(err);
+      setError(error.message);
     }
   };
 

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { api } from "src/api/api";
 import styles from "src/pages/Matches/Matches.module.scss";
 import type { User } from "src/types/UserMatches";
+import { CircleArrowRight } from "lucide-react";
 
 export const Matches = () => {
   const [matches, setMatches] = useState<User[]>([]);
@@ -94,7 +95,7 @@ export const Matches = () => {
       </div>
 
       <button onClick={handleNext}>
-        <img className={styles.matches__arrow} src="/arrow.png" alt="next" />
+        <CircleArrowRight className={styles.matches__arrow} />
       </button>
 
       {showModal && (

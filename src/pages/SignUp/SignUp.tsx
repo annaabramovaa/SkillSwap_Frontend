@@ -3,8 +3,8 @@ import type { RegisterData } from "src/types/RegisterData";
 import styles from "./SignUp.module.scss";
 import type { RegisterFormData } from "src/types/RegisterFormData";
 import { api } from "src/api/api";
-import type { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
+import { mapError } from "src/api/error";
 
 export const SignUp = () => {
   const navigate = useNavigate();
@@ -49,9 +49,8 @@ export const SignUp = () => {
 
       navigate("/login");
     } catch (err: unknown) {
-      const error = err as AxiosError<{ message: string }>;
-
-      setError(error.response?.data?.message || "Something went wrong");
+      const error = mapError(err);
+      setError(error.message);
     } finally {
       setLoading(false);
     }

@@ -3,6 +3,7 @@ import styles from "src/pages/UserHomePage/UserHomePage.module.scss";
 import { api } from "src/api/api";
 import { useEffect, useState } from "react";
 import type { Skill } from "src/types/SKill";
+import { mapError } from "src/api/error";
 
 export const UserHomePage = () => {
   const navigate = useNavigate();
@@ -12,8 +13,8 @@ export const UserHomePage = () => {
   const [hobbies, setHobbies] = useState("");
 
   const [query, setQuery] = useState("");
-
   const [suggestion, setSuggestion] = useState<Skill[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const timer = setTimeout(async () => {
@@ -29,8 +30,9 @@ export const UserHomePage = () => {
         });
 
         setSuggestion(response.data);
-      } catch (error) {
-        console.error(error);
+      } catch (err: unknown) {
+        const error = mapError(err);
+        setError(error.message);
       }
     }, 200);
 
@@ -60,7 +62,6 @@ export const UserHomePage = () => {
       params.append("hobbies", hobbies);
     }
 
-
     if (query.trim()) {
       params.append("skill", query);
     }
@@ -83,7 +84,6 @@ export const UserHomePage = () => {
       </div>
 
       <div className={styles.search__wrapper}>
-
         <input
           type="text"
           placeholder="Search skill..."
@@ -91,7 +91,6 @@ export const UserHomePage = () => {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
-
 
         <input
           type="text"
@@ -134,6 +133,7 @@ export const UserHomePage = () => {
           </ul>
         )}
       </div>
+      {error && <p>{error}</p>}
     </>
   );
 };
