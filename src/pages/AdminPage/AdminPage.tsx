@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
-import type { UserAdmin } from 'src/types/UserAdmin';
+import type { UserAdmin } from "src/types/UserAdmin";
 import type { AxiosError } from "axios";
 import { api } from "src/api/api";
+import { UsersTable } from "src/components/UsersTable/UsersTable";
+import { EditUserModal } from "src/components/EditUserModal/EditUserModal";
 
 export const AdminPage = () => {
   const [users, setUsers] = useState<UserAdmin[]>([]);
@@ -93,14 +95,11 @@ export const AdminPage = () => {
     }
   };
 
-  const handleSave = async () => {
-    if (!editUser) return;
-
+  const handleSave = async (updated: UserAdmin) => {
     try {
-      const { data } = await api.put(`/admin/users/${editUser.id}`, {
-        role: editUser.role,
+      const { data } = await api.put(`/admin/users/${updated.id}`, {
+        role: updated.role,
       });
-
       setUsers((prev) => prev.map((u) => (u.id === data.id ? data : u)));
       setEditUser(null);
     } catch (err: unknown) {
@@ -125,76 +124,24 @@ export const AdminPage = () => {
         </button>
       )}
 
-      {loading ? (
-        <p>Loading...</p>
-      ) : error ? (
-        <p>{error}</p>
-      ) : isEmpty ? (
-        <p>No users found</p>
-      ) : (
-        <table>
-          <thead>
-            <tr>
-              <th>
-                <input
-                  type="checkbox"
-                  checked={selected.length === users.length && users.length > 0}
-                  onChange={toggleSelectAll}
-                />
-              </th>
-              <th>Id</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Location</th>
-              <th>Role</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {users.map((user) => (
-              <tr key={user.id}>
-                <td>
-                  <input
-                    type="checkbox"
-                    checked={selected.includes(user.id)}
-                    onChange={() => toggleSelect(user.id)}
-                  />
-                </td>
-                <td>{user.id}</td>
-                <td>{user.name}</td>
-                <td>{user.email}</td>
-                <td>{user.location ?? "—"}</td>
-                <td>{user.role}</td>
-                <td>
-                  <button onClick={() => setEditUser(user)}>Edit</button>
-                  <button onClick={() => handleDelete(user.id)}>Delete</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+      <UsersTable
+        users={users}
+        selected={selected}
+        loading={loading}
+        error={error}
+        isEmpty={isEmpty}
+        onToggleSelect={toggleSelect}
+        onToggleSelectAll={toggleSelectAll}
+        onEdit={setEditUser}
+        onDelete={handleDelete}
+      />
 
       {editUser && (
-        <div>
-          <div>
-            <h2>Edit user</h2>
-            <label>Role</label>
-            <select
-              value={editUser.role}
-              onChange={(e) =>
-                setEditUser({ ...editUser, role: e.target.value })
-              }
-            >
-              <option value="user">user</option>
-              <option value="admin">admin</option>
-            </select>
-
-            <button onClick={handleSave}>Save</button>
-            <button onClick={() => setEditUser(null)}>Cancel</button>
-          </div>
-        </div>
+        <EditUserModal
+          user={editUser}
+          onSave={handleSave}
+          onCancel={() => setEditUser(null)}
+        />
       )}
     </div>
   );
